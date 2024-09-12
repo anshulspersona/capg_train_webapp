@@ -56,7 +56,7 @@ jobs:
     steps:
       - name: Login to GitHub Container Registry on EC2
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          echo "${{ secrets.APP_GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Pull Image from GHCR
         run: sudo docker pull ghcr.io/${{ github.repository }}/capg_train_webapp:latest
