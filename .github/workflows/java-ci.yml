@@ -59,7 +59,7 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Pull Image from GHCR
-        run: sudo docker pull ghcr.io/${{ github.repository }}/capg_train_webapp:latest
+        run: sudo docker pull ghcr.io/${{ github.repository }}/capg_train_webapp
 
       - name: Delete old container
         run: sudo docker rm -f spring-boot-app-container || true  # Ensure no error if container doesn't exist
