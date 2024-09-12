@@ -54,9 +54,9 @@ jobs:
 
     steps:
       - name: Connect to EC2
-        uses: actions/ssh-keygen@v2
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          key: ${{ secrets.EC2_SSH_KEY }}
+            ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
       - name: Pull Docker image
         run: ssh -i ~/.ssh/id_rsa ec2-user@52.22.171.228 "docker pull web-server-v1"
       - name: Run Docker container
