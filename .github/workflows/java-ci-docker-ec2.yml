@@ -31,6 +31,16 @@ jobs:
           mkdir artifacts && cp target/*.jar artifacts
           cd artifacts && ls
 
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: mvn sonar:sonar \
+          -Dsonar.projectKey=anshulspersona_capg_training \
+          -Dsonar.organization=anshulspersona_org \
+          -Dsonar.host.url=$SONAR_HOST_URL \
+          -Dsonar.login=$SONAR_TOKEN
+
       - name: Save artifact
         uses: actions/upload-artifact@v4
         with:
@@ -61,23 +71,23 @@ jobs:
         with:
           name: github-action-artifact
 
-      - name: Deploy Docker image to EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-        run: |
-          echo "${SSH_PRIVATE_KEY}" > id_rsa
-          chmod 600 id_rsa
-          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@44.223.228.163 << 'EOF'
-            # Log in to Docker registry
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-            # Pull the Docker image
-            docker pull ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
-
-            # Stop and remove the existing container if it exists
-            docker stop capg_train_webapp || true
-            docker rm capg_train_webapp || true
-
-            # Run the new container
-            docker run -d --name capg_train_webapp -p 8080:8080 ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
-          EOF
+#      - name: Deploy Docker image to EC2
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+#        run: |
+#          echo "${SSH_PRIVATE_KEY}" > id_rsa
+#          chmod 600 id_rsa
+#          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@44.223.228.163 << 'EOF'
+#            # Log in to Docker registry
+#            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+#
+#            # Pull the Docker image
+#            docker pull ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
+#
+#            # Stop and remove the existing container if it exists
+#            docker stop capg_train_webapp || true
+#            docker rm capg_train_webapp || true
+#
+#            # Run the new container
+#            docker run -d --name capg_train_webapp -p 8080:8080 ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
+#          EOF
