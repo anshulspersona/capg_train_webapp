@@ -34,12 +34,8 @@ jobs:
       - name: SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn sonar:sonar \
-          -Dsonar.projectKey=anshulspersona_capg_training \
-          -Dsonar.organization=anshulspersona_org \
-          -Dsonar.host.url=http:"http://sonarcloud.io" \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  # This is your SonarQube server URL (e.g., https://sonarcloud.io for SonarCloud)
+        run: mvn clean install sonar:sonar -Dsonar.token= $var.SONAR_TOKEN
 
       - name: Save artifact
         uses: actions/upload-artifact@v4
