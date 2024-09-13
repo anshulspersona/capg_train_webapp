@@ -1,3 +1,9 @@
+env:
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
+
+
+
 name: Java CI/CD with Maven
 
 on:
@@ -58,7 +64,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: "35.175.88.137"
+          REMOTE_HOST: "98.83.52.173"
           REMOTE_USER: "ec2-user"
           SOURCE: "dist/"
           TARGET: "hello-world"
