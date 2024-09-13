@@ -79,5 +79,5 @@ jobs:
             docker rm capg_train_webapp || true
 
             # Run the new container
-            docker run -d --name capg_train_webapp -p 80:80 ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
+            docker run -d --name capg_train_webapp -p 8080:8080 ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
           EOF
