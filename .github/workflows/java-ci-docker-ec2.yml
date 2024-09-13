@@ -38,8 +38,8 @@ jobs:
         run: mvn sonar:sonar \
           -Dsonar.projectKey=anshulspersona_capg_training \
           -Dsonar.organization=anshulspersona_org \
-          -Dsonar.host.url=$SONAR_HOST_URL \
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.host.url=${{ secrets.SONAR_URL }} \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Save artifact
         uses: actions/upload-artifact@v4
