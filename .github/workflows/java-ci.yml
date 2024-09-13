@@ -66,5 +66,5 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: "98.83.52.173"
           REMOTE_USER: "ec2-user"
-          SOURCE: "dist/"
+          SOURCE: "target/"
           TARGET: "hello-world"
