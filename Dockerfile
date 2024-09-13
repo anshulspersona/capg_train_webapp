@@ -16,5 +16,5 @@ RUN mvn package
 EXPOSE 8080
 
 # Run the application
-CMD ["java", "-jar", "target/my-app.jar"]
+CMD ["java", "-jar", "target/spring-boot-hello-world-1.0.jar"]
 
