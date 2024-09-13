@@ -38,7 +38,7 @@ jobs:
         run: mvn sonar:sonar \
           -Dsonar.projectKey=anshulspersona_capg_training \
           -Dsonar.organization=anshulspersona_org \
-          -Dsonar.host.url=${{ secrets.SONAR_URL }} \
+          -Dsonar.host.url=http:"http://sonarcloud.io" \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Save artifact
