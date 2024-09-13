@@ -35,7 +35,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  # This is your SonarQube server URL (e.g., https://sonarcloud.io for SonarCloud)
-        run: mvn clean install sonar:sonar -Dsonar.token= $var.SONAR_TOKEN
+        run: mvn clean install sonar:sonar
 
       - name: Save artifact
         uses: actions/upload-artifact@v4
