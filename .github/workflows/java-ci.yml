@@ -2,14 +2,11 @@ env:
   ACTIONS_RUNNER_DEBUG: true
   ACTIONS_STEP_DEBUG: true
 
-
-
 name: Java CI/CD with Maven
 
 on:
   push:
     branches: [ "main" ]
-
 
 jobs:
   build:
@@ -40,10 +37,9 @@ jobs:
           name: github-action-artifact
           path: artifacts
 
-      # Step to login to GitHub Container Registry (GHCR)
-      - name: Login to GitHub Container Registry
+      # Step to build and push Docker image to GitHub Container Registry (GHCR)
+      - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest .
-
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -57,9 +53,17 @@ jobs:
 
   deploy-image-to-ec2:
     runs-on: ubuntu-latest
-
+    needs: build  # This makes sure the deploy job only runs after the build job finishes
     steps:
       - uses: actions/checkout@v2
+
+      # Step to download the artifact produced during the build
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-action-artifact
+
+      # Step to deploy the artifact to the EC2 instance via SSH
       - name: ssh deploy
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
