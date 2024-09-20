@@ -75,7 +75,7 @@ jobs:
         run: |
           echo "${SSH_PRIVATE_KEY}" > id_rsa
           chmod 600 id_rsa
-          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@3.231.87.136 << 'EOF'
+          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@98.83.227.207 << 'EOF'
             # Log in to Docker registry
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
