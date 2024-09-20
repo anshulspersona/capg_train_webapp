@@ -16,6 +16,8 @@ public class HomeController {
     public String handlePostRequest()
     {
 
-        return "Hello"+ System.getenv("SMTP_USERNAME")+System.currentTimeMillis();
+        return "Hello"+" "+
+                System.getenv("REPO_ADMIN")+" "+"Access Time is "+
+                System.currentTimeMillis();
     }
 }
