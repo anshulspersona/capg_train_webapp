@@ -121,5 +121,5 @@ jobs:
             Commit: ${{ github.sha }}
             Workflow: ${{ github.workflow }}
             Job: ${{ github.job }}
-          to: refodo7240@nastyx.com
+          to: h3i325ge55@bltiwd.com
           from: ${{ secrets.SMTP_USERNAME }}
