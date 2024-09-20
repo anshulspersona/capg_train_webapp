@@ -1,13 +1,13 @@
-env:
-  ACTIONS_RUNNER_DEBUG: true
-  ACTIONS_STEP_DEBUG: true
-
 name: Java CI/CD with Maven
 
-'on':
+on:
   push:
     branches:
       - main
+
+env:
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
 
 jobs:
   build:
@@ -33,9 +33,9 @@ jobs:
 
       - name: SonarQube Scan
         env:
-          SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}'
-          SONAR_HOST_URL: '${{ secrets.SONAR_HOST_URL }}'
-        run: 'mvn clean install sonar:sonar'
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: mvn clean install sonar:sonar
 
       - name: Save artifact
         uses: actions/upload-artifact@v4
@@ -44,19 +44,17 @@ jobs:
           path: artifacts
 
       - name: Build Docker image
-        run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest .
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest .
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: '${{ github.actor }}'
-          password: '${{ secrets.GITHUB_TOKEN }}'
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Docker image to GHCR
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
+        run: docker push ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
 
   deploy-image-to-ec2:
     runs-on: ubuntu-latest
@@ -71,20 +69,20 @@ jobs:
 
       - name: Deploy Docker image to EC2
         env:
-          SSH_PRIVATE_KEY: '${{ secrets.EC2_SSH_KEY }}'
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
-          echo "${SSH_PRIVATE_KEY}" > id_rsa
+          echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
           ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@3.223.214.84 << 'EOF'
+            # Install Docker if not present
+            sudo yum update -y && sudo yum install -y docker
+            sudo service docker start
+            sudo usermod -a -G docker ec2-user
+          
             # Log in to Docker registry
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
-            #install Docker on machine 
-            sudo yum update -y sudo yum install -y docker  sudo service docker start sudo usermod -a -G docker ec2-user
-            
-                   
-
-  # Pull the Docker image
+            # Pull the Docker image
             docker pull ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
 
             # Stop and remove the existing container if it exists
@@ -101,9 +99,9 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: '${{ secrets.SMTP_USERNAME }}'
-          password: '${{ secrets.SMTP_PASSWORD }}'
-          subject: 'Build ${{ env.OUTCOME }}: ${{ github.repository }}'
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: 'Build Success: ${{ github.repository }}'
           body: |
             The build for repository ${{ github.repository }} was successful!
             Commit: ${{ github.sha }}
@@ -118,8 +116,8 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: '${{ secrets.SMTP_USERNAME }}'
-          password: '${{ secrets.SMTP_PASSWORD }}'
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
           subject: 'Build Failed: ${{ github.repository }}'
           body: |
             The build for repository ${{ github.repository }} failed!
