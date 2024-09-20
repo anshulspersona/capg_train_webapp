@@ -105,7 +105,7 @@ jobs:
             Workflow: ${{ github.workflow }}
             Job: ${{ github.job }}
           to: refodo7240@nastyx.com
-          from: '${{ secrets.SMTP_USERNAME }}'
+          from: anshul.anshul.sri@gmail.com
 
       - name: Send Failure email notification
         if: failure()
@@ -122,4 +122,4 @@ jobs:
             Workflow: ${{ github.workflow }}
             Job: ${{ github.job }}
           to: refodo7240@nastyx.com
-          from: '${{ secrets.SMTP_USERNAME }}'
+          from: anshul.anshul.sri@gmail.com
