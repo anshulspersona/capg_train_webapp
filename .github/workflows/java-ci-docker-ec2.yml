@@ -64,31 +64,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-action-artifact
-
-      - name: Deploy Docker image to EC2
-        env:
-          SSH_PRIVATE_KEY: '${{ secrets.EC2_SSH_KEY }}'
-        run: |
-          echo "${SSH_PRIVATE_KEY}" > id_rsa
-          chmod 600 id_rsa
-          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@3.231.87.136 << 'EOF'
-            # Log in to Docker registry
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-            # Pull the Docker image
-            docker pull ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
-
-            # Stop and remove the existing container if it exists
-            docker stop capg_train_webapp || true
-            docker rm capg_train_webapp || true
-
-            # Run the new container
-            docker run -d --name capg_train_webapp -p 8080:8080 ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
-          EOF
+#      - name: Download artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: github-action-artifact
+#
+#      - name: Deploy Docker image to EC2
+#        env:
+#          SSH_PRIVATE_KEY: '${{ secrets.EC2_SSH_KEY }}'
+#        run: |
+#          echo "${SSH_PRIVATE_KEY}" > id_rsa
+#          chmod 600 id_rsa
+#          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@3.231.87.136 << 'EOF'
+#            # Log in to Docker registry
+#            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+#
+#            # Pull the Docker image
+#            docker pull ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
+#
+#            # Stop and remove the existing container if it exists
+#            docker stop capg_train_webapp || true
+#            docker rm capg_train_webapp || true
+#
+#            # Run the new container
+#            docker run -d --name capg_train_webapp -p 8080:8080 ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
+#          EOF
 
       - name: Send Success email notification
         if: success()
