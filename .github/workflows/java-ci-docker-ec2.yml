@@ -75,11 +75,16 @@ jobs:
         run: |
           echo "${SSH_PRIVATE_KEY}" > id_rsa
           chmod 600 id_rsa
-          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@98.83.227.207 << 'EOF'
+          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@3.223.214.84 << 'EOF'
             # Log in to Docker registry
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Pull the Docker image
+            #install Docker on machine 
+            sudo yum update -y sudo yum install -y docker  sudo service docker start sudo usermod -a -G docker ec2-user
+            
+                   
+
+  # Pull the Docker image
             docker pull ghcr.io/${{ github.repository_owner }}/capg_train_webapp:latest
 
             # Stop and remove the existing container if it exists
