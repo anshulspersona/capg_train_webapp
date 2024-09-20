@@ -16,6 +16,6 @@ public class HomeController {
     public String handlePostRequest()
     {
 
-        return "Hello"+ env.getProperty("SMTP_USERNAME")+System.currentTimeMillis();
+        return "Hello"+ System.getenv("SMTP_USERNAME")+System.currentTimeMillis();
     }
 }
