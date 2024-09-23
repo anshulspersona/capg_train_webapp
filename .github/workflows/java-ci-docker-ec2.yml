@@ -73,12 +73,12 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
-          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@3.223.214.84 << 'EOF'
+          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@172.31.93.171 << 'EOF'
             # Install Docker if not present
             sudo yum update -y && sudo yum install -y docker
             sudo service docker start
-           
-          
+
+
             # Log in to Docker registry
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
