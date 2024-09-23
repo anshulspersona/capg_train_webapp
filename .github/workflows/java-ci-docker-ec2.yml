@@ -73,7 +73,7 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
-          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@172.31.93.171 << 'EOF'
+          ssh -i id_rsa -o StrictHostKeyChecking=no ec2-user@34.227.155.94 << 'EOF'
             # Install Docker if not present
             sudo yum update -y && sudo yum install -y docker
             sudo service docker start
@@ -107,7 +107,7 @@ jobs:
             Commit: ${{ github.sha }}
             Workflow: ${{ github.workflow }}
             Job: ${{ github.job }}
-          to: refodo7240@nastyx.com
+          to: mayur.gori@capgemini.com
           from: ${{ secrets.SMTP_USERNAME }}
 
       - name: Send Failure email notification
@@ -124,5 +124,5 @@ jobs:
             Commit: ${{ github.sha }}
             Workflow: ${{ github.workflow }}
             Job: ${{ github.job }}
-          to: h3i325ge55@bltiwd.com
+          to: mayur.gori@capgemini.com
           from: ${{ secrets.SMTP_USERNAME }}
